@@ -25,7 +25,7 @@ SECRET_KEY = 'u_2ba6ob_=d-%!f$$hftte()p2hhg#o((dsf1)vwt(&lt^5e5*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0']
 
 
 # Application definition

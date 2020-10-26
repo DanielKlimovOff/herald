@@ -1,17 +1,7 @@
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.base_user import BaseUserManager
-
-# Create your models here.
-class User(AbstractBaseUser, PermissionsMixin):
-	name = models.CharField(max_length=1023)
-	phone = models.CharField(max_length=255)
-	email = models.CharField(max_length=255)
-
-	objects = UserManager()
-
-	USERNAME_FIELD = 'email'
-	REQUIRED_FIELDS = ['phone']
+from django.db import models
 
 
 class UserManager(BaseUserManager):
@@ -40,3 +30,15 @@ class UserManager(BaseUserManager):
 			raise ValueError('Superuser must have is_superuser=True.')
 
 		return self._create_user(email, password, **extra_fields)
+
+
+# Create your models here.
+class User(AbstractBaseUser, PermissionsMixin):
+	name = models.CharField(max_length=1023, null=False, blank=False, unique=False)
+	phone = models.CharField(max_length=255, null=False, blank=False, unique=False)
+	email = models.CharField(max_length=255, null=False, blank=False, unique=True)
+
+	objects = UserManager()
+
+	USERNAME_FIELD = 'email'
+	REQUIRED_FIELDS = ['phone']
