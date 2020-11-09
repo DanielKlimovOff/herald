@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 # Создаём класс формы
 class RegistrForm(UserCreationForm):
   # Добавляем новое поле Email
-  email = forms.EmailField(max_length=254, help_text='This field is required')
+  email = forms.EmailField(max_length=254, help_text='Это поле должно быть заполнено')
   
   # Создаём класс Meta
   class Meta:
