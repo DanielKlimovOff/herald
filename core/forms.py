@@ -2,7 +2,7 @@
 from django import forms
 # Подключаем компонент UserCreationForm
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
  
  
 # Создаём класс формы
@@ -13,6 +13,9 @@ class RegistrForm(UserCreationForm):
   # Создаём класс Meta
   class Meta:
     # Свойство модели User
+    User = get_user_model()
     model = User
     # Свойство назначения полей
-    fields = ('username', 'email', 'password1', 'password2', )
+    fields = ('name', 'email', 'password1', 'password2')
+
+

@@ -28,7 +28,8 @@ def registration(request):
 			data['res'] = "Всё прошло успешно"
 			# Рендаринг страницы
 			return render(request, 'registration.html', data)
-	else: # Иначе
+		else:
+			return render(request, 'registration.html', data)
 		# Создаём форму
 		form = RegistrForm()
 		# Передаём форму для рендеринга
@@ -39,3 +40,22 @@ def registration(request):
 def okey(request):
 	default_context.update({'title': 'Все нормально'})
 	return render(request, 'okey.html', default_context)
+
+def update_profile(request):
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, _('Ваш профиль был успешно обновлен!'))
+            return redirect('settings:profile')
+        else:
+            messages.error(request, _('Пожалуйста, исправьте ошибки.'))
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
+    return render(request, 'profile.html', {
+        'user_form': user_form,
+        'profile_form': profile_form
+    })
