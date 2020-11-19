@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from .forms import RegistrForm
 
 default_context = {'title': 'OpenMessengerI'}
@@ -19,7 +19,9 @@ def registration(request):
 		# Создаём форму
 		form = RegistrForm(request.POST)
 		# Валидация данных из формы
+
 		if form.is_valid():
+
 			# Сохраняем пользователя
 			form.save()
 			# Передача формы к рендару
@@ -27,15 +29,16 @@ def registration(request):
 			# Передача надписи, если прошло всё успешно
 			data['res'] = "Всё прошло успешно"
 			# Рендаринг страницы
-			return render(request, 'registration.html', data)
-		else:
-			return render(request, 'registration.html', data)
-		# Создаём форму
-		form = RegistrForm()
-		# Передаём форму для рендеринга
-		data['form'] = form
-		# Рендаринг страницы
-		return render(request, 'registration.html', data)
+			# return render(request, 'okey.html', data)
+			default_context.update({'title': 'Все нормально'})
+			return render(request, 'okey.html', default_context)
+			# return redirect(to=revers 
+	# Создаём форму
+	form = RegistrForm()
+	# Передаём форму для рендеринга
+	data['form'] = form
+	# Рендаринг страницы
+	return render(request, 'registration.html', data)
 
 def okey(request):
 	default_context.update({'title': 'Все нормально'})
