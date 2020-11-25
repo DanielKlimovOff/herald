@@ -16,27 +16,20 @@ def registration(request):
 	data = {}
 	# Проверка что есть запрос POST
 	if request.method == 'POST':
-		# Создаём форму
 		form = RegistrForm(request.POST)
-		# Валидация данных из формы
-
+		
 		if form.is_valid():
-
-			# Сохраняем пользователя
 			form.save()
-			# Передача формы к рендару
-			data['form'] = form
-			# Передача надписи, если прошло всё успешно
-			data['res'] = "Всё прошло успешно"
-			# Рендаринг страницы
-			# return render(request, 'okey.html', data)
-			default_context.update({'title': 'Все нормально'})
-			return render(request, 'okey.html', default_context)
-			# return redirect(to=revers 
+			# data['form'] = form
+			# data['res'] = "Всё прошло успешно"
+			return render(request, 'okey.html', data)
 	# Создаём форму
-	form = RegistrForm()
-	# Передаём форму для рендеринга
+	# if form.errors:
+		# data['durak'] = True
+	# print(form.errors)
+	form = RegistrForm() # TODO: понять почему эта строчка всё портит!
 	data['form'] = form
+
 	# Рендаринг страницы
 	return render(request, 'registration.html', data)
 
