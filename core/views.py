@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.shortcuts import render
-from django.contrib.auth.forms import UserCreationForm
+# from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect, reverse
-from .forms import RegistrForm
+from .forms import RegistrationForm
+from .models import User
 
 default_context = {'title': 'OpenMessengerI'}
 # Create your views here.
@@ -11,27 +12,43 @@ def index(request):
 	return render(request, 'index.html', default_context)
  
 # Функция регистрации
-def registration(request):
-	# Массив для передачи данных шаблонны
-	data = {}
-	# Проверка что есть запрос POST
-	if request.method == 'POST':
-		form = RegistrForm(request.POST)
-		
-		if form.is_valid():
-			form.save()
-			# data['form'] = form
-			# data['res'] = "Всё прошло успешно"
-			return render(request, 'okey.html', data)
-	# Создаём форму
-	# if form.errors:
-		# data['durak'] = True
-	# print(form.errors)
-	form = RegistrForm() # TODO: понять почему эта строчка всё портит!
-	data['form'] = form
+# def registration_old(request):
+	
+# 	data = {}
+# 	if request.method == 'POST':
+# 		form = RegistrForm(request.POST or None)	
+# 		if form.is_valid():
+# 			print('Form is valid')
+# 			form.save()
 
-	# Рендаринг страницы
-	return render(request, 'registration.html', data)
+# 			return redirect(to=reverse('okey'))
+# 	# Создаём форму
+# 	# if form.errors:
+# 		# data['durak'] = True
+# 	# print(form.errors)
+# 	# form = RegistrForm() # TODO: понять почему эта строчка всё портит!
+# 	# data['form'] = form
+
+# 	# Рендаринг страницы
+# 	return render(request, 'registration.html')
+
+
+def registration(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user(
+                password=form.cleaned_data['password1'],
+                email=form.cleaned_data['email'],
+            )
+            user.name=form.cleaned_data['name']
+            user.save()
+
+            return redirect(to=reverse('okey'))
+    else:
+        form = RegistrationForm()
+
+    return render(request, 'registration.html', context={'form': form})
 
 def okey(request):
 	default_context.update({'title': 'Все нормально'})
